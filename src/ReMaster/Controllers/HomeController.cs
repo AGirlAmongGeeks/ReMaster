@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ReMaster.Utilities.Tools;
 
 namespace ReMaster.Controllers
 {
@@ -10,6 +11,7 @@ namespace ReMaster.Controllers
     {
         public IActionResult Index()
         {
+			//ErrorLog.Save(new Exception("testowy", null));
             return View();
         }
 

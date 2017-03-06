@@ -1,9 +1,13 @@
-﻿{
+{
   "version": "1.0.0-*",
 
-  "dependencies": {
-    "NETStandard.Library": "1.6.0"
-  },
+	"dependencies": {
+		"Microsoft.EntityFrameworkCore": "1.1.0",
+		"Microsoft.Extensions.Logging": "1.1.0",
+		"NETStandard.Library": "1.6.0",
+		"System.Reflection.TypeExtensions": "4.3.0",
+		"NLog.Web.AspNetCore": "4.3.0"
+    },
 
   "frameworks": {
     "netstandard1.6": {

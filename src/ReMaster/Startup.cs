@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Extensions.Logging;
+using NLog.Targets;
+using Microsoft.AspNetCore.Http;
+using NLog.Web;
 
 namespace ReMaster
 {
@@ -20,7 +25,8 @@ namespace ReMaster
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
-        }
+			env.ConfigureNLog("nlog.config");
+		}
 
         public IConfigurationRoot Configuration { get; }
 
@@ -55,6 +61,12 @@ namespace ReMaster
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
+
+			//add NLog to ASP.NET Core
+			loggerFactory.AddNLog();
+
+			//add NLog.Web
+			app.AddNLogWeb();
+		}
     }
 }
