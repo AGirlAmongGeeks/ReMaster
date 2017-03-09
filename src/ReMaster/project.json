@@ -15,14 +15,14 @@
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
     "Microsoft.AspNetCore.StaticFiles": "1.0.0",
     "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
 			"Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
     "NLog.Web.AspNetCore": "4.3.1",
-    "ReMaster.Utilities": "1.0.0-*"
+			"ReMaster.Utilities": "1.0.0-*",
+			"Microsoft.Extensions.Configuration.Json": "1.1.0"
   },
 
   "tools": {
@@ -61,8 +61,9 @@
 			]
   },
 
-  "scripts": {
-    "prepublish": [ "bower install", "dotnet bundle" ],
-    "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
-  }
+    "scripts": {
+        "prepublish": [ "bower install", "dotnet bundle" ],
+        "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
+    },
+    "userSecretsId": "aspnet-ReMaster.Web-20170309024542"
 }

@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
-namespace ReMaster.Core
+[assembly: UserSecretsId("aspnet-ReMaster.Web-20170309024542")]
+namespace ReMaster.Utilities.Tools
 {
-	public static class ConfigurationHelper
+	public class ConfigurationHelper
 	{
 		private static readonly ConcurrentDictionary<string, IConfigurationRoot> ConfigurationCache;
 
@@ -45,7 +47,7 @@ namespace ReMaster.Core
 		/// <returns></returns>
 		private static IConfigurationRoot BuildConfiguration(string path, string environmentName = null, bool addUserSecrets = false)
 		{
-			var builder = new ConfigurationBuilder()
+			 var builder = new ConfigurationBuilder()
 				.SetBasePath(path)
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
@@ -58,7 +60,7 @@ namespace ReMaster.Core
 
 			if (addUserSecrets)
 			{
-				builder.AddUserSecrets();
+				builder.AddUserSecrets<ConfigurationHelper>();
 			}
 
 			return builder.Build();

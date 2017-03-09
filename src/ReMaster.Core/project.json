@@ -1,21 +1,26 @@
 {
   "version": "1.0.0-*",
-
-    "dependencies": {
-        "Microsoft.Extensions.Configuration": "1.1.0",
-        "Microsoft.Extensions.Configuration.Abstractions": "1.1.0",
-        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
-        "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
-        "Microsoft.Extensions.Configuration.Json": "1.1.0",
-        "Microsoft.Extensions.Configuration.UserSecrets": "1.1.0",
-        "NETStandard.Library": "1.6.0",
-        "ReMaster.Utilities": "1.0.0-*",
-        "System.ComponentModel.Annotations": "4.3.0"
-    },
-
+  "dependencies": {
+    "Microsoft.Extensions.Configuration": "1.1.0",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.1.0",
+    "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
+    "Microsoft.Extensions.Configuration.FileExtensions": "1.1.0",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+    "Microsoft.Extensions.Configuration.UserSecrets": "1.1.0",
+    "NETStandard.Library": "1.6.0",
+    "ReMaster.Utilities": "1.0.0-*",
+    "System.ComponentModel.Annotations": "4.3.0"
+  },
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "dependencies": {
+        "System.ServiceModel.Duplex": "4.0.1",
+        "System.ServiceModel.Http": "4.1.0",
+        "System.ServiceModel.NetTcp": "4.1.0",
+        "System.ServiceModel.Security": "4.0.1",
+        "System.Xml.XmlSerializer": "4.0.11"
+      }
     }
   }
 }

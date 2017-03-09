@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ReMaster.Utilities.Tools;
 
 namespace ReMaster.Controllers
@@ -11,8 +13,10 @@ namespace ReMaster.Controllers
     {
         public IActionResult Index()
         {
+			//var test = ConfigurationHelper.Get(Directory.GetCurrentDirectory(), null, true);
+			//var aa = test.GetValue<string>("CEIDGApiKey");
 			//ErrorLog.Save(new Exception("testowy", null));
-            return View();
+			return View();
         }
 
         public IActionResult About()
