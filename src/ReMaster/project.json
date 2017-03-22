@@ -1,9 +1,5 @@
 {
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "version": "1.0.1",
-      "type": "platform"
-    },
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Razor.Tools": {
@@ -22,7 +18,12 @@
 			"Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
     "NLog.Web.AspNetCore": "4.3.1",
 			"ReMaster.Utilities": "1.0.0-*",
-			"Microsoft.Extensions.Configuration.Json": "1.1.0"
+    "Microsoft.Extensions.Configuration.Json": "1.1.0",
+			"ReMaster.Core": "1.0.0-*",
+			"Microsoft.NETCore.App": {
+				"version": "1.0.1",
+				"type": "platform"
+			}
   },
 
   "tools": {
@@ -42,7 +43,8 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "define": [ "DEBUG", "TRACE" ]
   },
 
   "runtimeOptions": {

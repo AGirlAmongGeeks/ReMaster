@@ -1,13 +1,24 @@
-﻿{
-  "version": "1.0.0-*",
-
-  "dependencies": {
-    "NETStandard.Library": "1.6.0"
-  },
-
-  "frameworks": {
-    "netstandard1.6": {
-      "imports": "dnxcore50"
-    }
-  }
+{
+	"dependencies": {
+		"dotnet-test-xunit": "2.2.0-preview2-build1029",
+		"Microsoft.NETCore.App": {
+			"type": "platform",
+			"version": "1.0.0"
+		},
+		"ReMaster.Core": {
+			"target": "project",
+			"version": "1.0.0"
+		},
+		"xunit": "2.1.0"
+	},
+	"frameworks": {
+		"netcoreapp1.0": {
+			"imports": [
+				"dnxcore50",
+				"portable-net45+win8"
+			]
+		}
+	},
+	"testRunner": "xunit",
+	"version": "1.0.0"
 }
