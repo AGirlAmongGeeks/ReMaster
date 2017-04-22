@@ -1,16 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ReMaster.Utilities.Tools;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-
-using ReMaster.EntityFramework;
-using Microsoft.Extensions.Logging;
-using ReMaster.Utilities.Tools;
 
 namespace ReMaster.EntityFramework.Repositories
 {
@@ -19,7 +11,7 @@ namespace ReMaster.EntityFramework.Repositories
 		private ReMasterDbContext _dataContext;
 		public readonly DbSet<T> dbSet;
 		
-		protected RepositoryBase(ReMasterDbContext dataContext)
+		public RepositoryBase(ReMasterDbContext dataContext)
 		{
 			_dataContext = dataContext;
 			dbSet = dataContext.Set<T>();
@@ -30,6 +22,19 @@ namespace ReMaster.EntityFramework.Repositories
 			try
 			{
 				dbSet.Add(entity);
+			}
+			catch (Exception ex)
+			{
+				ErrorLog.Save(ex);
+				throw;
+			}
+		}
+
+		public virtual void AddAll(List<T> entities)
+		{
+			try
+			{
+				dbSet.AddRange(entities);
 			}
 			catch (Exception ex)
 			{
@@ -153,11 +158,38 @@ namespace ReMaster.EntityFramework.Repositories
 			}
 		}
 
+		public virtual IQueryable<T> GetTable()
+		{
+			try
+			{
+				return dbSet;
+			}
+			catch (Exception e)
+			{
+				ErrorLog.Save(e);
+				throw;
+			}
+		}
 		public virtual IEnumerable<T> GetAll()
 		{
 			try
 			{
-				return dbSet.ToList();
+				return dbSet
+					.ToList();
+			}
+			catch (Exception e)
+			{
+				ErrorLog.Save(e);
+				throw;
+			}
+		}
+		public virtual IEnumerable<T> GetAll(Func<T, string> orderBy)
+		{
+			try
+			{
+				return dbSet
+					.OrderBy(orderBy)
+					.ToList();
 			}
 			catch (Exception e)
 			{

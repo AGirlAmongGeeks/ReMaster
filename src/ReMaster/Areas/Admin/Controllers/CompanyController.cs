@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
+using ReMaster.BusinessLogic.Company;
 using ReMaster.Core.Providers.CEIDG;
-using ReMaster.Utilities.Tools;
 
 namespace ReMaster.Areas.Admin.Controllers
 {
@@ -14,7 +8,14 @@ namespace ReMaster.Areas.Admin.Controllers
 	[Route("admin/[controller]")]
 	public class CompanyController : Controller
     {
-        public IActionResult Index()
+		private readonly ICompanyAppService companyService;
+	
+		public CompanyController(ICompanyAppService _companyService)
+		{
+			this.companyService = _companyService;
+		}
+
+		public IActionResult Index()
         {
 			return View();
         }
@@ -22,7 +23,7 @@ namespace ReMaster.Areas.Admin.Controllers
 		[Route("ImportCeidg")]
 		public IActionResult ImportCeidg()
 	    {
-			CEIDGProvider.ImportClients();
+			CEIDGProvider.ImportClients(companyService);
 		    return View("Import");
 	    }
     }

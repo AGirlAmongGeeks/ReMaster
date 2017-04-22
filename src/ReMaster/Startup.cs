@@ -12,6 +12,13 @@ using NLog.Extensions.Logging;
 using NLog.Targets;
 using Microsoft.AspNetCore.Http;
 using NLog.Web;
+using AutoMapper;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using ReMaster.BusinessLogic.Company;
+using ReMaster.EntityFramework.Repositories;
+using ReMaster.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace ReMaster
 {
@@ -33,12 +40,22 @@ namespace ReMaster
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc();
-        }
+			services.AddDbContext<ReMasterDbContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+			services.AddAutoMapper(typeof(Startup));
+
+			services.AddMvc();
+
+			services.AddSingleton(typeof(IRepositoryBase<>), typeof(RepositoryBase<>)); 
+			services.AddSingleton(typeof(ICompanyRepository<>), typeof(CompanyRepository<>));
+			services.AddSingleton<ICompanyAppService, CompanyAppService>();
+		}
+
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

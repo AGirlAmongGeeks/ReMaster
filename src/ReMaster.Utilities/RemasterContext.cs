@@ -6,7 +6,7 @@ using System.Reflection;
 using ReMaster.Utilities.Tools;
 using Microsoft.Extensions.Configuration;
 
-namespace ReMaster.Core
+namespace ReMaster.Utilities
 {
 	public class RemasterContext
 	{

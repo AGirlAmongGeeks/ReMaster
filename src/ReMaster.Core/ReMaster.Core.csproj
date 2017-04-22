@@ -12,6 +12,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Model\**" />
+    <EmbeddedResource Remove="Model\**" />
+    <None Remove="Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="RemasterContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReMaster.BusinessLogic\ReMaster.BusinessLogic.csproj" />
+    <ProjectReference Include="..\ReMaster.EntityFramework\ReMaster.EntityFramework.csproj" />
     <ProjectReference Include="..\ReMaster.Utilities\ReMaster.Utilities.csproj" />
   </ItemGroup>
 

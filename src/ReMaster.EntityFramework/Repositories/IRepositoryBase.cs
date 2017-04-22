@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReMaster.Utilities.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,6 +11,7 @@ namespace ReMaster.EntityFramework.Repositories
 	public interface IRepositoryBase<T> where T : class
 	{
 		void Add(T entity);
+		void AddAll(List<T> entities);
 		T Update(T entity);
 
 		void Delete(T entity);
@@ -23,6 +25,8 @@ namespace ReMaster.EntityFramework.Repositories
 		int GetCount(Func<T, bool> where);
 
 		IEnumerable<T> GetAll();
+		IQueryable<T> GetTable();
+		IEnumerable<T> GetAll(Func<T, string> orderBy);
 		IEnumerable<T> GetMany(Func<T, bool> where);
 
 		void ExecuteCommand(string sql, params object[] parameters);

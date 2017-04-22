@@ -5,10 +5,11 @@ using System.ServiceModel;
 using CEIDGApi;
 using Microsoft.Extensions.Configuration;
 using NLog.Fluent;
-using ReMaster.Core.Model.Company;
+using ReMaster.EntityFramework.Model;
 using ReMaster.Utilities.Tools;
 using System.Xml;
 using System.Xml.Linq;
+using ReMaster.BusinessLogic.Company;
 
 namespace ReMaster.Core.Providers.CEIDG
 {
@@ -34,12 +35,12 @@ namespace ReMaster.Core.Providers.CEIDG
 		};
 
 		#region ImportClients()
-		public static async void ImportClients()
+		public static async void ImportClients(ICompanyAppService companyService)
 		{
 			try
 			{
 				var client = new DataStoreProviderClient(DataStoreProviderClient.EndpointConfiguration.BasicHttpBinding_IDataStoreProvider);
-
+				
 				try
 				{
 					var configuration = ConfigurationHelper.Get(Directory.GetCurrentDirectory(), null, true);
@@ -47,34 +48,30 @@ namespace ReMaster.Core.Providers.CEIDG
 					var connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
 
 					client.InnerChannel.OperationTimeout = TimeSpan.MaxValue;
-					//var start = DateTime.Now;
-
-					foreach (var voivod in Voivodeships)
-					{
-						var result = await client.GetMigrationDataExtendedInfoAsync(key,
-							null, //nip
-							null, //regon 
-							null, //nip_sc
-							null, //regon_sc
-							null, //name
-							new List<string>() { voivod },// provinces,
-							null, //county
-							null, //commune
-							null, //city
-							null, //street
-							null,  //postcode
-							null, //date from
-							null, //date to
-							null, //pkd
-							new List<int> { 1 }, //status
-							null, //unique id
-							null, //migration date from
-							null); //migration date to
+					
+					//Right now, we import companies from only one city - restriction to speed up development tests.
+					var result = await client.GetMigrationDataExtendedInfoAsync(key,
+						null, //nip
+						null, //regon 
+						null, //nip_sc
+						null, //regon_sc
+						null, //name
+						new List<string>(),// { voivod },// provinces,
+						null, //county
+						null, //commune
+						new List<string>() { "Rzeszów" }, //city
+						null, //street
+						null,  //postcode
+						null, //date from
+						null, //date to
+						null, //pkd
+						new List<int> { 1 }, //status
+						null, //unique id
+						null, //migration date from
+						null); //migration date to
 
 						var importedCompanies = ParseCompanies(result);
-						//TODO Save data to DB.
-					}
-					//Log.Info().Message("Companies download time: {0} seconds", (DateTime.Now - start).TotalSeconds);
+						companyService.AddCompanies(importedCompanies);
 				}
 				catch (Exception ex)
 				{
@@ -183,6 +180,10 @@ namespace ReMaster.Core.Providers.CEIDG
 
 									importedCompanies.Add(company);
 								}
+							}
+							else
+							{
+								reader.Read();
 							}
 						}
 					}

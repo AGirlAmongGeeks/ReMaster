@@ -11,4 +11,26 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Repositories\**" />
+    <Compile Remove="UnitOfWork\**" />
+    <EmbeddedResource Remove="Repositories\**" />
+    <EmbeddedResource Remove="UnitOfWork\**" />
+    <None Remove="Repositories\**" />
+    <None Remove="UnitOfWork\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ReMasterDBContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ReMaster.EntityFramework\ReMaster.EntityFramework.csproj" />
+    <ProjectReference Include="..\ReMaster.Utilities\ReMaster.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using ReMaster.Utilities.Tools;
+using ReMaster.BusinessLogic.Company;
 
 namespace ReMaster.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+		public IActionResult Index()
         {
 			//var test = ConfigurationHelper.Get(Directory.GetCurrentDirectory(), null, true);
 			//var aa = test.GetValue<string>("CEIDGApiKey");

@@ -1,15 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using ReMaster.Core;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ReMaster.Utilities.Tools;
-using ReMaster.Core.Model.Company;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using ReMaster.EntityFramework.Model;
+using ReMaster.Utilities;
+using ReMaster.Utilities.Tools;
 
 namespace ReMaster.EntityFramework
 {
