@@ -8,9 +8,10 @@ using ReMaster.EntityFramework;
 namespace ReMaster.EntityFramework.Migrations
 {
     [DbContext(typeof(ReMasterDbContext))]
-    partial class ReMasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170503114134_CreateProjectMetaData")]
+    partial class CreateProjectMetaData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -34,8 +35,6 @@ namespace ReMaster.EntityFramework.Migrations
                     b.Property<string>("Email");
 
                     b.Property<string>("Fax");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("NIP");
 

@@ -21,7 +21,8 @@ namespace ReMaster.EntityFramework.Repositories
 		}
 
 		#region AddInTransaction()
-		public virtual void AddInTransaction(List<Company> entities)
+
+		public virtual void AddAndDeleteNotPresent(List<Company> entities)
 		{
 			using (var transaction = dataContext.Database.BeginTransaction(IsolationLevel.ReadCommitted))
 			{
@@ -34,28 +35,38 @@ namespace ReMaster.EntityFramework.Repositories
 						var existingItem = itemsInDB.Where(c => c.CeidgId == item.CeidgId).FirstOrDefault();
 						if (existingItem != null)
 						{
-							//Update.
-							//AutoMapper .Ignore() seems to not work... Needs more research ;).
+							#region Update.
+
 							var updatingItemId = existingItem.Id;
-							existingItem = Mapper.Map<Company>(item);
+
+							Mapper.Map<Company, Company>(item, existingItem);
+
 							existingItem.Id = updatingItemId;
 
 							dataContext.Update(existingItem);
 
-							itemsInDB.Remove(existingItem);
+							itemsInDB.Remove(existingItem); 
+
+							#endregion
 						}
 						else
 						{
-							//Insert.
+							#region Insert.
+
 							dataContext.Add(item);
+
+							#endregion
 						}
 					}
 
-					//Soft-delete of all the items absent in the current import.
+					#region Soft-delete of all the items absent in the current import.
+
 					foreach (var itemToDelete in itemsInDB)
 					{
-						itemToDelete.Status = "-1";
-					}
+						itemToDelete.IsDeleted = true;
+					} 
+
+					#endregion
 
 					dataContext.SaveChanges();
 
@@ -68,6 +79,7 @@ namespace ReMaster.EntityFramework.Repositories
 				}
 			}
 		} 
+
 		#endregion
 	}
 }

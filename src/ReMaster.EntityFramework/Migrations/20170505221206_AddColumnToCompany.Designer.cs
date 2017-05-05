@@ -8,9 +8,10 @@ using ReMaster.EntityFramework;
 namespace ReMaster.EntityFramework.Migrations
 {
     [DbContext(typeof(ReMasterDbContext))]
-    partial class ReMasterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170505221206_AddColumnToCompany")]
+    partial class AddColumnToCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

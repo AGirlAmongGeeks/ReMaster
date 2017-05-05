@@ -10,11 +10,14 @@ using ReMaster.Utilities.Tools;
 using System.Xml;
 using System.Xml.Linq;
 using ReMaster.BusinessLogic.Company;
+using ReMaster.BusinessLogic;
+using static NewCEIDGApiProd.NewDataStoreProviderClient;
 
 namespace ReMaster.Core.Providers.CEIDG
 {
 	public class CEIDGProvider
 	{
+		#region Voivodeships
 		private static List<string> Voivodeships = new List<string>() {
 			"dolnośląskie",
 			"kujawsko-pomorskie",
@@ -32,73 +35,71 @@ namespace ReMaster.Core.Providers.CEIDG
 			"warmińsko-mazurskie",
 			"wielkopolskie",
 			"zachodniopomorskie"
-		};
+		}; 
+		#endregion
 
 		#region ImportClients()
-		public static async void ImportClients(ICompanyAppService companyService)
+
+		public static async void ImportClients(ICompanyAppService companyService, IProjectMetaDataService metaDataService)
 		{
+			var newClient = new NewCEIDGApiProd.NewDataStoreProviderClient(EndpointConfiguration.BasicHttpBinding_INewDataStoreProvider);
+
 			try
 			{
-				var client = new DataStoreProviderClient(DataStoreProviderClient.EndpointConfiguration.BasicHttpBinding_IDataStoreProvider);
-				
-				try
-				{
-					var configuration = ConfigurationHelper.Get(Directory.GetCurrentDirectory(), null, true);
-					var key = configuration.GetValue<string>("CEIDGApiKey");
-					var connectionString = configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
+				var configuration = ConfigurationHelper.Get(Directory.GetCurrentDirectory(), null, true);
+				var dateOfLastImport = metaDataService.GetDateOfLastImport(ProviderType.CEIDG);
 
-					client.InnerChannel.OperationTimeout = TimeSpan.MaxValue;
-					
-					//Right now, we import companies from only one city - restriction to speed up development tests.
-					var result = await client.GetMigrationDataExtendedInfoAsync(key,
-						null, //nip
-						null, //regon 
-						null, //nip_sc
-						null, //regon_sc
-						null, //name
-						new List<string>(),// { voivod },// provinces,
-						null, //county
-						null, //commune
-						new List<string>() { "Rzeszów" }, //city
-						null, //street
-						null,  //postcode
-						null, //date from
-						null, //date to
-						null, //pkd
-						new List<int> { 1 }, //status
-						null, //unique id
-						null, //migration date from
-						null); //migration date to
+				newClient.InnerChannel.OperationTimeout = TimeSpan.MaxValue;
 
-						var importedCompanies = ParseCompanies(result);
-						companyService.AddCompanies(importedCompanies);
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(ex);
-					throw;
-				}
-				finally
-				{
-					if (client.State == CommunicationState.Faulted)
-					{
-						client.Abort();
-					}
-					else
-					{
-						await client.CloseAsync();
-					}
-				}
+				var result = await newClient.GetMigrationDataExtendedAddressInfoAsync(
+					configuration.GetValue<string>("CEIDGApiKey"), //key
+					null, //nip
+					null, //regon 
+					null, //nip_sc
+					null, //regon_sc
+					null, //name
+					Voivodeships, // provinces,
+					null, //county
+					null, //commune
+					null, //city
+					null, //street
+					null, //postcode
+					null, //date from
+					null, //date to
+					null, //pkd
+					new List<int> { 1 }, //status
+					null, //unique id
+					dateOfLastImport == DateTime.MinValue ? (DateTime?)null : dateOfLastImport, //migration date from
+					null); //migration date to
+
+				var importedCompanies = ParseCompanies(result);
+
+				companyService.AddCompanies(importedCompanies, dateOfLastImport == DateTime.MinValue);
+
+				metaDataService.SetDateOfLastImport(ProviderType.CEIDG, DateTime.Now);
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				Console.WriteLine(e);
+				ErrorLog.Save(ex);
 				throw;
 			}
+			finally
+			{
+				if (newClient.State == CommunicationState.Faulted)
+				{
+					newClient.Abort();
+				}
+				else
+				{
+					await newClient.CloseAsync();
+				}
+			}
 		} 
+
 		#endregion
 
 		#region ParseCompanies()
+
 		public static List<Company> ParseCompanies(string importedText)
 		{
 			List<Company> importedCompanies = new List<Company>();
@@ -196,10 +197,11 @@ namespace ReMaster.Core.Providers.CEIDG
 			}
 			finally
 			{
-
 			}
+
 			return importedCompanies;
 		} 
+
 		#endregion
 
 		#region GenerateStreamFromString()

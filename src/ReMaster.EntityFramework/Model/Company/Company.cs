@@ -29,5 +29,7 @@ namespace ReMaster.EntityFramework.Model
 		public string AddessAnomaly { get; set; }
 		public string Status { get; set; }
 		public string PKDCodes { get; set; }
+
+		public bool IsDeleted { get; set; }
 	}
 }

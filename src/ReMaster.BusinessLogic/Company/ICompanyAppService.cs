@@ -10,7 +10,7 @@ namespace ReMaster.BusinessLogic.Company
     public interface ICompanyAppService
     {
 		List<CompanyListDto> GetCompanies();
-		void AddCompanies(List<RModel.Company> items);
+		void AddCompanies(List<RModel.Company> items, bool isInitialImport);
 		CompanyListDto GetById(int id);
 	}
 }

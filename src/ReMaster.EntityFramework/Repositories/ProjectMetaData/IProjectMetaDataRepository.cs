@@ -8,8 +8,9 @@ using System.Linq;
 
 namespace ReMaster.EntityFramework.Repositories
 {
-	public interface ICompanyRepository<T> where T : class
+	public interface IProjectMetaDataRepository<T> where T : class
 	{
-		void AddAndDeleteNotPresent(List<Company> entity);
+		string GetValue(string key);
+		void SaveValue(string key, object value);
 	}
 }

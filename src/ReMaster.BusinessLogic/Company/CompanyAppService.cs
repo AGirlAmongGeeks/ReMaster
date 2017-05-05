@@ -41,9 +41,16 @@ namespace ReMaster.BusinessLogic.Company
 		#endregion
 
 		#region AddCompanies()
-		public void AddCompanies(List<RCModel.Company> items)
+		public void AddCompanies(List<RCModel.Company> items, bool isInitialImport)
 		{
-			companyRepoExtended.AddInTransaction(items);
+			if (isInitialImport)
+			{
+				companyRepoBase.AddAll(items);
+			}
+			else
+			{
+				companyRepoExtended.AddAndDeleteNotPresent(items);
+			}
 		}
 		#endregion
 		

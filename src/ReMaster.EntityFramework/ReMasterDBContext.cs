@@ -26,6 +26,7 @@ namespace ReMaster.EntityFramework
 		}
 
 		public virtual DbSet<Company> Companies { get; set; }
+		public virtual DbSet<ProjectMetaData> ProjectMetaDatas { get; set; }
 	}
 
 	public class MigrationsContextFactory : IDbContextFactory<ReMasterDbContext>

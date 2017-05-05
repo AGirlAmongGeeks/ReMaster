@@ -18,7 +18,7 @@ using ReMaster.BusinessLogic.Company;
 using ReMaster.EntityFramework.Repositories;
 using ReMaster.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-
+using ReMaster.BusinessLogic;
 
 namespace ReMaster
 {
@@ -51,7 +51,10 @@ namespace ReMaster
 
 			services.AddSingleton(typeof(IRepositoryBase<>), typeof(RepositoryBase<>)); 
 			services.AddSingleton(typeof(ICompanyRepository<>), typeof(CompanyRepository<>));
+			services.AddSingleton(typeof(IProjectMetaDataRepository<>), typeof(ProjectMetaDataRepository<>));
+
 			services.AddSingleton<ICompanyAppService, CompanyAppService>();
+			services.AddSingleton<IProjectMetaDataService, ProjectMetaDataService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
