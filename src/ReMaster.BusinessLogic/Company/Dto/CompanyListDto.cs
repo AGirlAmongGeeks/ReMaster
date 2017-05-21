@@ -17,5 +17,7 @@ namespace ReMaster.BusinessLogic.Company.Dto
 		public string Fax { get; set; }
 		public string City { get; set; }
 
+        public bool IsDeleted { get; set; }
+
 	}
 }

@@ -8,6 +8,7 @@ using RCModel = ReMaster.EntityFramework.Model;
 using ReMaster.EntityFramework.Repositories;
 //using ReMaster.BusinessLogic.UnitOfWork;
 using System.Linq;
+using ReMaster.Utilities;
 
 namespace ReMaster.BusinessLogic.Company
 {
@@ -22,17 +23,26 @@ namespace ReMaster.BusinessLogic.Company
 			this.companyRepoBase = _companyRepo;
 		}
 
-		#region GetCompanies()
-		public List<CompanyListDto> GetCompanies()
+        #region GetAll()
+        public List<CompanyListDto> GetAll()
 		{
 			var companies = companyRepoBase.GetAll();
 
 			return Mapper.Map<IEnumerable<RCModel.Company>, List<CompanyListDto>>(companies);
 		}
-		#endregion
+        #endregion
 
-		#region GetById()
-		public CompanyListDto GetById(int id)
+        #region GetList()
+        public List<CompanyListDto> GetList(Pager pager)
+        {
+            var companies = companyRepoBase.GetMany(pager);
+
+            return Mapper.Map<IEnumerable<RCModel.Company>, List<CompanyListDto>>(companies);
+        } 
+        #endregion
+
+        #region GetById()
+        public CompanyListDto GetById(int id)
 		{
 			var companies = companyRepoBase.GetById(id);
 

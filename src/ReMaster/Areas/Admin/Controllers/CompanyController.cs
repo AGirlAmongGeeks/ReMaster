@@ -2,6 +2,7 @@
 using ReMaster.BusinessLogic;
 using ReMaster.BusinessLogic.Company;
 using ReMaster.Core.Providers.CEIDG;
+using ReMaster.Utilities;
 
 namespace ReMaster.Areas.Admin.Controllers
 {
@@ -18,9 +19,24 @@ namespace ReMaster.Areas.Admin.Controllers
 			this.metaDataService = _metaDataService;
 		}
 
-		public IActionResult Index()
+		public IActionResult Index(int pageIndex = 1)
         {
-			return View();
+            #region Pager.
+            if (pageIndex < 0)
+            {
+                pageIndex = 1;
+            }
+
+            Pager pager = new Pager();
+            pager.PageIndex = pageIndex;
+            pager.PageSize = 100;
+            pager.SortExpression = "Name";
+            pager.SortDirection = "DESC";
+            #endregion
+
+            var data = companyService.GetList(pager);
+
+            return View(data);
         }
 
 		[Route("ImportCeidg")]

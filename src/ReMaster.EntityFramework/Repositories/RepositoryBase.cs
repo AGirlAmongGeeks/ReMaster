@@ -1,8 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReMaster.Utilities;
 using ReMaster.Utilities.Tools;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace ReMaster.EntityFramework.Repositories
 {
@@ -211,7 +215,30 @@ namespace ReMaster.EntityFramework.Repositories
 			}
 		}
 
-		public void ExecuteCommand(string sql, params object[] parameters)
+        public virtual IEnumerable<T> GetMany(Pager pager)
+        {
+            try
+            {
+                pager.RowCount = dbSet.Count();
+
+                return dbSet
+                    .OrderBy(pager.SortExpression)
+                    .Skip(pager.Offset)
+                    .Take(pager.PageSize)
+                    .ToList();
+
+            }
+            catch (Exception e)
+            {
+                ErrorLog.Save(e);
+                throw;
+            }
+        }
+
+
+        
+
+        public void ExecuteCommand(string sql, params object[] parameters)
 		{
 			try
 			{

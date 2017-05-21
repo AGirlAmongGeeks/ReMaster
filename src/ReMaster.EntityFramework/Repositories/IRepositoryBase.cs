@@ -1,4 +1,5 @@
-﻿using ReMaster.Utilities.Entities;
+﻿using ReMaster.Utilities;
+using ReMaster.Utilities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace ReMaster.EntityFramework.Repositories
 		IQueryable<T> GetTable();
 		IEnumerable<T> GetAll(Func<T, string> orderBy);
 		IEnumerable<T> GetMany(Func<T, bool> where);
+		IEnumerable<T> GetMany(Pager pager);
+
 
 		void ExecuteCommand(string sql, params object[] parameters);
 	}
